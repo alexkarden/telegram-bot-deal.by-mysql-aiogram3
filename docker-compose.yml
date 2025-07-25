@@ -1,0 +1,13 @@
+services:
+  bot:
+    build: .  
+    container_name: KazBot_deal_gvs_mysql_v1
+    environment:
+      - DATABASE_HOST=db            
+      - DATABASE_PORT=3306           
+      - DATABASE_USER=root           
+      - DATABASE_PASSWORD=1234       
+      - DATABASE_NAME=deal_gvs_db    
+    volumes:
+      - ./logfile.log:/app/logfile.log  
+    restart: always      
