@@ -1,17 +1,17 @@
 import logging
+import os
 import aiomysql
-
-from config import host, user, password, port, db_name
+from dotenv import load_dotenv
+load_dotenv()
 
 DATABASE_CONFIG = {
-    'host': host,        # хост MySQL (обычно localhost)
-    'port': port,               # порт (обычно 3306)
-    'user': user,    # имя пользователя
-    'password': password, # пароль
-    'db': db_name,      # имя базы данных
+    'host': os.getenv("DB_HOST"),
+    'port': int(os.getenv("DB_PORT")),
+    'user': os.getenv("DB_USER"),
+    'password': os.getenv("DB_PASSWORD"),
+    'db': os.getenv("DB_NAME"),
 }
-
-
+print
 # Создает и возвращает пул соединений к базе данных.--------------------------------------------------------------------mySQL
 async def create_pool():
     return await aiomysql.create_pool(**DATABASE_CONFIG)
@@ -37,7 +37,7 @@ async def init_db():
     except aiomysql.MySQLError as e:
         logging.error(f"Ошибка при работе с MySQL - Инициализация базы данных: {e}")
     except Exception as e:
-        logging.error(f"Произошла ошибка: {e}")
+        logging.error(f"Произошла ошибка Инициализация базы данных : {e}")
     finally:
         # Закрываем пул соединений, если он был создан
         if pool:
@@ -60,7 +60,7 @@ async def add_order_to_db(number_of_order, order_text):
     except aiomysql.MySQLError as e:
         logging.error(f"Ошибка при работе с MySQL: {e}")
     except Exception as e:
-        logging.error(f"Произошла ошибка: {e}")
+        logging.error(f"Произошла ошибка Добавление заказа в базу данных: {e}")
     finally:
         # Закрываем пул соединений, если он был создан
         if pool:
@@ -85,7 +85,7 @@ async def get_last_order_from_db():
     except aiomysql.MySQLError as e:
         logging.error(f"Ошибка при работе с MySQL - Получение последнего заказа из базы данных: {e}")
     except Exception as e:
-        logging.error(f"Произошла ошибка: {e}")
+        logging.error(f"Произошла ошибка  Получение последнего заказа из базы данных: {e}")
     finally:
         # Закрываем пул соединений, если он был создан
         if pool:
@@ -106,7 +106,7 @@ async def get_order_list_for_rassilka(status):
     except aiomysql.MySQLError as e:
         logging.error(f"Ошибка при работе с MySQL - Получение списка заказов из базы данных для рассылки: {e}")
     except Exception as e:
-        logging.error(f"Произошла ошибка: {e}")
+        logging.error(f"Произошла ошибка Получение списка заказов из базы данных для рассылки: {e}")
     finally:
         # Закрываем пул соединений, если он был создан
         if pool:
@@ -129,7 +129,7 @@ async def change_status_order(send_status, number_of_orders):
     except aiomysql.MySQLError as e:
         logging.error(f"Ошибка при работе с MySQL - Смена статуса заказа для рассылки: {e}")
     except Exception as e:
-        logging.error(f"Произошла ошибка: {e}")
+        logging.error(f"Произошла ошибка Смена статуса заказа для рассылки: {e}")
     finally:
         if pool:
             pool.close()

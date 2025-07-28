@@ -1,10 +1,15 @@
 import requests
 import logging
-from config import API_URL, AUTH_TOKEN
+import os
+from config import API_URL
+from dotenv import load_dotenv
+load_dotenv()
+
+
 
 
 def make_request(url):
-    headers = {'Authorization': 'Bearer ' + AUTH_TOKEN,
+    headers = {'Authorization': 'Bearer ' + os.getenv("AUTH_TOKEN"),
                'Content-type': 'application/json'}
     try:
         response = requests.get(API_URL+url, headers=headers)  # Используйте requests.get для простоты
