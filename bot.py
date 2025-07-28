@@ -1,19 +1,19 @@
-# Импортируем библиотеку asyncio для работы с асинхронным программированием.
 import asyncio
-# Импортируем библиотеку для логирования. Позволяет записывать события, ошибки и информацию о работе бота.
+import os
+from dotenv import load_dotenv
 import logging
-# Импортируем классы Bot и Dispatcher из библиотеки aiogram для создания Telegram-бота.
 from aiogram import Bot, Dispatcher
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-# Импортируем токен бота из файла конфигурации config.py
-from config import TOKEN_TG, CHECKINTERVAL,CHECKINTERVALR
+from config import CHECKINTERVAL,CHECKINTERVALR
 
 from scripts import init_db
 from scripts_scheduler import update_orders,rassilka_for_users
 
+load_dotenv()
+
 
 # Создаем объект Bot, передавая токен, который позволяет боту взаимодействовать с Telegram API.
-bot = Bot(token=TOKEN_TG)
+bot = Bot(token=os.getenv("TOKEN_TG"))
 # Создаем объект Dispatcher для обработки обновлений и маршрутизации сообщений.
 dp = Dispatcher()
 
@@ -47,7 +47,7 @@ async def main():
 
 if __name__ == '__main__':
     logging.basicConfig(
-        level=logging.WARNING,
+        level=logging.ERROR,
         filename='logfile.log',
         filemode='w',
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
